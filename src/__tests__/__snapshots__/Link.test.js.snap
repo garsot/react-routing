@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Link tests should render correctly 1`] = `
+<a
+  href="/url"
+  onClick={[Function]}
+>
+  Link
+</a>
+`;
