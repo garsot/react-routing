@@ -10,6 +10,8 @@ const Link = forwardRef(({ to, children, onClick, ...props }, ref) => {
     return <a ref={ref} href={to} onClick={(e) => { e.preventDefault(); HistoryManager.push(to); onClick && onClick(e) }} {...props}>{children}</a>
 })
 
+Link.displayName = 'Link'
+
 Link.propTypes = {
     to: PropTypes.oneOfType([
         PropTypes.string,
@@ -18,7 +20,7 @@ Link.propTypes = {
             search: PropTypes.object,
             hash: PropTypes.string
         })
-    ]).isRequired,    
+    ]).isRequired,
     innerRef: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.func,

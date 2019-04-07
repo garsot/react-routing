@@ -22,7 +22,8 @@ function generateRouteTreeID() {
     return generateRouteTreeID.id
 }
 
-const RouteContext = createContext()
+const RouteTreeContext = createContext()
+RouteTreeContext.displayName = 'RouteTreeContext'
 
 /**
  * Routing hook
@@ -35,7 +36,7 @@ const RouteContext = createContext()
 export default function useRoutes(routes, defaultComponent) {
 
     const [route, setRoute] = useState(null)
-    const routeTreeID = useContext(RouteContext)
+    const routeTreeID = useContext(RouteTreeContext)
     const routeID = useMemo(() => routeTreeID || generateRouteTreeID(), [routes])
     const extra = useMemo(() => new UseRoutesHookExtra(convert(routes), defaultComponent, routeID, setRoute), [routes])
 
@@ -59,9 +60,9 @@ export default function useRoutes(routes, defaultComponent) {
 
                 if (!routeTreeID) {
                     return (
-                        <RouteContext.Provider value={routeID}>
+                        <RouteTreeContext.Provider value={routeID}>
                             {targetElement}
-                        </RouteContext.Provider>
+                        </RouteTreeContext.Provider>
                     )
                 }
 
