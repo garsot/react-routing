@@ -56,7 +56,14 @@ export default function useRoutes(routes, defaultComponent) {
         (props = params) => {
 
             if (TargetComponent) {
-                const targetElement = <TargetComponent {...props} />
+
+                let targetElement
+
+                if (React.isValidElement(TargetComponent)) {
+                    targetElement = TargetComponent
+                } else {
+                    targetElement = <TargetComponent {...props} />
+                }
 
                 if (!routeTreeID) {
                     return (

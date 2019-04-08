@@ -110,7 +110,8 @@ function Nav() {
     return (
         <nav id='nav'>
             <Link style={style} to='/home'>To Main Page</Link>
-            <Link style={style} to='/page-a/42'>To Page A</Link>
+            <Link style={style} to='/page-a/42'>To Page A (42)</Link>
+            <Link style={style} to='/page-a/10'>To Page A (10)</Link>
             <Link style={style} to='/page-b'>To Page B</Link>
             <Link style={style} to='/page-c/42'>To Page C</Link>
             <Link style={style} to='#test-hash'>Test Hash</Link>
@@ -151,7 +152,7 @@ function Footer() {
 const routes = [
     { path: '/', target: '/home' }, // redirect
     { path: '/home', target: MainPage }, // exact
-    { path: '/page-a/:id', target: PageA }, // named param
+    { path: '/page-a/:id', execTarget: ({ id }) => <PageA id={id} /> }, // named param and execTarget
     { path: '/page-b/*', target: PageB }, // tail
     { path: new RegExp('^/page-c(?:/(\\d+))?$'), target: PageC }, // regexp
     // or
@@ -163,7 +164,7 @@ const routes = [
             else if (id === '2') return () => <div>Page D (2)</div>
             return Page404
         }
-    } // executable target
+    } // another example of execTarget
 ]
 
 export default function App() {
