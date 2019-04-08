@@ -8,7 +8,7 @@ The following is a simple example.
 
 ```jsx
 import React from 'react'
-import { useRoutes, Link, HistoryManager } from '@kemsu/routing'
+import { useRoutes, Link, HistoryManager } from '@kemsu/react-routing'
 
 const routes = {
     '/': '/pattern/42/tail', // redirect
