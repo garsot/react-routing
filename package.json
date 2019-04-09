@@ -5,7 +5,7 @@
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
   "scripts": {
-    "eslint": "npx eslint ./src",
+    "lint": "npx eslint ./src",
     "prepublishOnly": "npm run build",
     "build": "rollup -c --environment NODE_ENV:production",
     "start": "rollup -c -w --environment RUN_EXAMPLE,NODE_ENV:development",
@@ -24,7 +24,7 @@
     "name": "Igor Sotnikov",
     "email": "sotnikov@kemsu.ru"
   },
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/garsot/react-routing/issues"
   },
