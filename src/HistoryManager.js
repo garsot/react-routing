@@ -21,12 +21,10 @@ export default class HistoryManager {
 
         if (typeof to === 'object') {
 
-            let pathname = to.pathname ? to.pathname : location.pathname
-            let search = to.search ? '/?' + Object.entries(to.search).map(([key, value]) => `${encodeURI(key)}=${encodeURI(value)}`).join('&') : ''
-
+            let pathname = to.pathname ? to.pathname : ''
+            let search = to.search ? '?' + Object.entries(to.search).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&') : ''
             to = `${pathname}${search}`
             state = to.state ? to.state : state
-
             hash = '#' + to.hash
 
         } else {
@@ -41,15 +39,13 @@ export default class HistoryManager {
 
         if (hash) location = hash
 
-        if (to === `${location.pathname}/${location.search}`
-            ||
-            to === `${location.pathname}${location.search}`) return
+        if (to === `${location.pathname}${location.search}`) return
 
         window.history.pushState(state, null, to)
 
-        const values = Object.values(HistoryManager.handlersMap)
+        const handlersMapValues = Object.values(HistoryManager.handlersMap)
 
-        for (let { handlers } of values) {
+        for (let { handlers } of handlersMapValues) {
             for (let handler of handlers) {
                 if (handler() === false) break
             }
@@ -79,7 +75,7 @@ export default class HistoryManager {
                 const { handlers } = HistoryManager.handlersMap[routeTreeID]
 
                 for (let handler of handlers) {
-                    if (handler() === true) break
+                    if (handler() === false) break
                 }
             }
 
@@ -108,7 +104,6 @@ export default class HistoryManager {
         if (index < 0) throw new Error(`Attempt to remove a handler not connected to the push event!`)
 
         handlers.splice(index, 1)
-
 
         if (handlers.length === 0) {
             delete HistoryManager.handlersMap[routeTreeID]
