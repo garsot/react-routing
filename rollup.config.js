@@ -52,7 +52,7 @@ const exampleConfig = {
         }),
         resolve({
             alias: {
-                "@kemsu/routing": path.resolve(__dirname, "src")
+                "@kemsu/react-routing": path.resolve(__dirname, "src")
             }
         }),
         replace({
@@ -60,7 +60,7 @@ const exampleConfig = {
         }),
         commonjs({
             namedExports: {
-                'react': ['useState', 'useEffect', 'useMemo', 'createContext', 'useContext', 'forwardRef']
+                'react': ['useState', 'useEffect', 'useMemo', 'createContext', 'useContext', 'forwardRef', 'useCallback', 'createElement']
             }
         }),
 

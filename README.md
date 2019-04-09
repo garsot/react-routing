@@ -2,29 +2,39 @@
 
 Routing for React using hooks
 
-## Usage
-
-The following is a simple example.
+## Example
 
 ```jsx
 import React from 'react'
 import { useRoutes, Link, HistoryManager } from '@kemsu/react-routing'
 
 const routes = {
-    '/': '/pattern/42/tail', // redirect
-    '/pattern/:id/*': ({ id, _ }) => <div> Id = {id}, Tail = {_} </div>, // pattern
-    '~/regexp/([-a-z]+)': (execResult) => <div> RegExp exec result is "{execResult[1]}" </div> //regexp
+    '/': '/pattern', // redirect
+    '/pattern/:id/*': ({ id }, match) => <div> Id = {id}, Match = {match} </div>, // template with named parameters
+    '@^/regexp/([-a-z]+)': (params, match) => <div> Param = {params[0]}, Match = {match} </div> // regexp 
 }
+// OR
+/*
+const routes = [
+    { path: '/', target: '/pattern/42/tail' },
+    { path: '/pattern/:id/*', target: ({ id }, match) => <div> Id = {id}, Match = {match} </div> }, 
+    { path: new RegExp('^/regexp/([-a-z]+)'), target: (params, match) => <div> Param = {params[0]}, Match = {match} </div> }
+]
+*/
 
-export default function App() {
-    const [route, /* params */] = useRoutes(routes, () => <div>Default Component</div>)
+export default function Example() {
+
+    const route = useRoutes(routes)   
+
     return (
         <>
-            <nav>                
-                <Link to='/pattern/42/tail'>Pattern</Link> <br />
-                <button onClick={() => HistoryManager.push('/regexp/hello-from-regexp')}>RegExp</button>
+            <nav>
+                <Link to='/pattern/42/tail'>Pattern</Link>
+                <button onClick={() => HistoryManager.push('/regexp/hello-from-regexp/tail')}>RegExp</button>
             </nav>
-            {route(/* params */)}
+            <div>
+                {route || <div>Default</div>}
+            </div>
         </>
     )
 }

@@ -6,13 +6,22 @@ import parseUrl from './parseUrl'
  */
 export default class UseRoutesHookExtra {
 
-    constructor(routes, defaultComponent, routeTreeID, setRoute) {
+    constructor(routes, routeTreeID, setRoute) {
         this.routes = routes
-        this.defaultComponent = defaultComponent
         this.routeTreeID = routeTreeID
         this.onUrlChange = route => {
             setRoute(route)
         }
+    }
+
+    shallowEqual(obj1 = {}, obj2 = {}) {
+
+        const keys1 = Object.keys(obj1)
+        const keys2 = Object.keys(obj2)
+
+        if (keys1.length !== keys2.length) return false
+
+        return keys1.every(key => obj1[key] === obj2[key])
     }
 
     getTargetRoute = () => {
@@ -21,9 +30,9 @@ export default class UseRoutesHookExtra {
 
         for (let route of this.routes) {
 
-            let { path = ['/*'], target, execTarget } = route
+            let { path = ['/*'], target } = route
 
-            if (!target && !execTarget) throw new Error("The property 'target' or 'execTarget' is required!")
+            if (!target) throw new Error("The property 'target' is required!")
 
             if (!(path instanceof Array)) {
                 path = [path]
@@ -31,13 +40,9 @@ export default class UseRoutesHookExtra {
 
             for (let p of path) {
 
-                let params = parseUrl(p, currentUrl)
+                let parseResult = parseUrl(p, currentUrl)
 
-                if (!params) continue
-
-                if (execTarget) {
-                    target = execTarget(params)
-                }
+                if (!parseResult) continue
 
                 if (typeof target === 'string') {
 
@@ -47,24 +52,24 @@ export default class UseRoutesHookExtra {
                     continue
                 }
 
-                return { component: target, params }
+                return { target, parseResult }
             }
         }
 
-        return { component: this.defaultComponent, params: {} }
+        return {}
     }
 
     handleHistoryChange = () => {
 
         const targetRoute = this.getTargetRoute()
+        this.lastRoute = this.lastRoute || {}
 
-        const targetComponent = targetRoute && targetRoute.component
-        const currentComponent = this.currentRoute && this.currentRoute.component
+        if (targetRoute.target === this.lastRoute.target && (
+            !targetRoute.target || this.shallowEqual(targetRoute.parseResult.params, this.lastRoute.parseResult.params)
+        )) return
 
-        if (targetComponent === currentComponent) return
-
-        this.currentRoute = targetRoute
-
+        this.lastRoute = targetRoute
+        
         this.onUrlChange(targetRoute)
 
         return false

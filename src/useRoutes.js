@@ -6,7 +6,7 @@ function convert(routes) {
     if (!(routes instanceof Array)) {
         return Object.entries(routes).map(([path, target]) => {
 
-            if (path[0] === '~') {
+            if (path[0] === '@') {
                 path = new RegExp(path.slice(1))
             }
 
@@ -29,16 +29,14 @@ RouteTreeContext.displayName = 'RouteTreeContext'
  * Routing hook
  * @param {Object[]|Object} routes
  * @param {String|RegExp} [routes[].path = '/*' ] 
- * @param {String|ReactComponent} routes[].target
- * @param {function(params:object)} routes[].execTarget
- * @param {String|ReactComponent} [defaultComponent]
+ * @param {String|function(params:Object, match:String):ReactElement} routes[].target  
  */
-export default function useRoutes(routes, defaultComponent) {
+export default function useRoutes(routes) {
 
     const [route, setRoute] = useState(null)
     const routeTreeID = useContext(RouteTreeContext)
     const routeID = useMemo(() => routeTreeID || generateRouteTreeID(), [routes])
-    const extra = useMemo(() => new UseRoutesHookExtra(convert(routes), defaultComponent, routeID, setRoute), [routes])
+    const extra = useMemo(() => new UseRoutesHookExtra(convert(routes), routeID, setRoute), [routes])
 
     useEffect(extra.handleEffect, [])
 
@@ -46,37 +44,20 @@ export default function useRoutes(routes, defaultComponent) {
 
     if (!route) {
         currentRoute = extra.getTargetRoute()
-        extra.currentRoute = currentRoute
+        extra.lastRoute = currentRoute
+    }         
+
+    if(!currentRoute.target) return null
+
+    const { target, parseResult: { params, match } } = currentRoute
+
+    if (!routeTreeID) {
+        return (
+            <RouteTreeContext.Provider value={routeID}>
+                {target(params, match)}
+            </RouteTreeContext.Provider>
+        )
     }
 
-    const TargetComponent = currentRoute && currentRoute.component
-    const params = currentRoute ? currentRoute.params : {}
-
-    return [
-        (props = params) => {
-
-            if (TargetComponent) {
-
-                let targetElement
-
-                if (React.isValidElement(TargetComponent)) {
-                    targetElement = TargetComponent
-                } else {
-                    targetElement = <TargetComponent {...props} />
-                }
-
-                if (!routeTreeID) {
-                    return (
-                        <RouteTreeContext.Provider value={routeID}>
-                            {targetElement}
-                        </RouteTreeContext.Provider>
-                    )
-                }
-
-                return targetElement
-            }
-
-        },
-        params
-    ]
+    return target(params, match)
 }
