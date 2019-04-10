@@ -25,6 +25,8 @@ export default function parseUrl(path, url = location.pathname) {
         patternRE += "$"
     }else {
         patternRE = patternRE.slice(0,-2)
+
+        if(patternRE === "^") patternRE = "^/"
     }
 
     patternRE = new RegExp(patternRE)
