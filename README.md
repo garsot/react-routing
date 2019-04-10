@@ -2,6 +2,10 @@
 
 Routing for React using hooks
 
+## Installation
+
+`npm install @kemsu/react-routing`
+
 ## Example
 
 ```jsx
