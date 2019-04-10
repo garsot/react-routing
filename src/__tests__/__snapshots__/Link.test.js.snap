@@ -2,9 +2,9 @@
 
 exports[`Link tests should render correctly 1`] = `
 <a
-  href="/url"
+  href="/test"
   onClick={[Function]}
 >
-  Link
+  Test
 </a>
 `;
