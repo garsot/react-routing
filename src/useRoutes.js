@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useMemo, createContext, useContext } from 'react'
 import UseRoutesHookExtra from './UseRoutesHookExtra'
 
-function convert(routes) {
+function convert(routes, basePath) {
 
     if (!(routes instanceof Array)) {
-        return Object.entries(routes).map(([path, target]) => {
+        routes = Object.entries(routes).map(([path, target]) => {
 
             if (path[0] === '@') {
                 path = new RegExp(path.slice(1))
@@ -12,6 +12,12 @@ function convert(routes) {
 
             return { path, target }
         })
+    }    
+
+    if (basePath) {
+        for (let route of routes) {
+            route.path = basePath + '/' + route.path
+        }
     }
 
     return routes
@@ -31,12 +37,12 @@ RouteTreeContext.displayName = 'RouteTreeContext'
  * @param {String|RegExp} [routes[].path = '/*' ] 
  * @param {String|function(params:Object, match:String):ReactElement} routes[].target  
  */
-export default function useRoutes(routes) {
+export default function useRoutes(routes, basePath) {
 
     const [route, setRoute] = useState(null)
     const routeTreeID = useContext(RouteTreeContext)
-    const routeID = useMemo(() => routeTreeID || generateRouteTreeID(), [routes])
-    const extra = useMemo(() => new UseRoutesHookExtra(convert(routes), routeID, setRoute), [routes])
+    const routeID = useMemo(() => routeTreeID || generateRouteTreeID(), [routes, match])
+    const extra = useMemo(() => new UseRoutesHookExtra(convert(routes, basePath), routeID, setRoute), [routes, match])
 
     useEffect(extra.handleEffect, [])
 
@@ -45,9 +51,9 @@ export default function useRoutes(routes) {
     if (!route) {
         currentRoute = extra.getTargetRoute()
         extra.lastRoute = currentRoute
-    }         
+    }
 
-    if(!currentRoute.target) return null
+    if (!currentRoute.target) return null
 
     const { target, parseResult: { params, match } } = currentRoute
 

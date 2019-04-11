@@ -6,21 +6,21 @@ const Child1 = () => console.log('render: Child1') || <div>Child 1</div>
 const Child2 = () => console.log('render: Child2') || <div>Child 2</div>
 
 const subroutes = {
-    '/parent/child1': () => <Child1 />,
-    '/parent/child2': () => <Child2 />
+    'child1': () => <Child1 />,
+    'child2': () => <Child2 />
 }
 
-function WithSubroutes() {
+function WithSubroutes({ match }) {
 
     console.log('render: WithSubroutes')
 
-    const route = useRoutes(subroutes)
+    const route = useRoutes(subroutes, match)
 
     return (
         <>
             <nav>
-                <Link style={style.navItem} to='/parent/child1'>To Child 1</Link>
-                <Link style={style.navItem} to='/parent/child2'>To Child 2</Link>
+                <Link style={style.navItem} to={`${match}/child1`}>To Child 1</Link>
+                <Link style={style.navItem} to={`${match}/child2`}>To Child 2</Link>
             </nav>
             <main style={style.routeContainer}>
                 {route || <DefaultComponent />}
@@ -31,7 +31,7 @@ function WithSubroutes() {
 
 
 const routes = {
-    '/parent/*': () => <WithSubroutes />
+    '/parent/*': (params, match) => <WithSubroutes match={match} />
 }
 
 const DefaultComponent = () => <div>Default Component</div>
