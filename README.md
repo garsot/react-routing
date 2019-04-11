@@ -31,7 +31,7 @@ export default function Example() {
     const route = useRoutes(routes)   
 
     return (
-        <>
+        <React.Fragment>
             <nav>
                 <Link to='/pattern/42/tail'>Pattern</Link>
                 <button onClick={() => HistoryManager.push('/regexp/hello-from-regexp/tail')}>RegExp</button>
@@ -39,8 +39,11 @@ export default function Example() {
             <div>
                 {route || <div>Default</div>}
             </div>
-        </>
+        </React.Fragment>
     )
 }
 ```
+
+---
+**MIT Licensed**
 
