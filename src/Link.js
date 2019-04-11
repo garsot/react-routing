@@ -20,12 +20,7 @@ Link.propTypes = {
             search: PropTypes.object,
             hash: PropTypes.string
         })
-    ]).isRequired,
-    innerRef: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.any })
-    ])
+    ]).isRequired    
 }
 
 export default Link
