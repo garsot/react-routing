@@ -2,8 +2,9 @@
  * The function for parsing the url in accordance with the specified template/regexp.
  * 
  * @param {string|RegExp} path - template or regexp
- * For template you can specify named parameters in the format ':param_name' (for example, '/page/:subpage').  
- * If your url can have any tail, add '/*' to end of pattern (for example, '/page/:subpage/*).
+ * For template you can specify named parameters in the format `:param_name` (for example, `/page/:subpage`).  
+ * If your url can have any tail, add `/*` to end of template (for example, `/page/:subpage/*`). Tail not included in `match`.
+ * @param {string} path
  * @param {string} [url = location.pathname] - url pathname.
  * @returns {{ params: Object, match: String }}
  */
