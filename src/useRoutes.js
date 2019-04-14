@@ -12,11 +12,14 @@ function convert(routes, basePath) {
 
             return { path, target }
         })
-    }    
+    }
 
     if (basePath) {
         for (let route of routes) {
+            let isRegExp = route.path instanceof RegExp
+            if (isRegExp) route.path = route.path.source
             route.path = basePath + '/' + route.path
+            if (isRegExp) route.path = new RegExp(route.path)
         }
     }
 
