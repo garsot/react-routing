@@ -8,6 +8,8 @@ Routing for React using hooks
 
 ## Example
 
+See more examples [here](https://github.com/garsot/react-routing/tree/master/example/examples).
+
 ```jsx
 import React from 'react'
 import { useRoutes, Link, HistoryManager } from '@kemsu/react-routing'
