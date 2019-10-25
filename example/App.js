@@ -2,10 +2,12 @@ import React, { useState, useEffect, useCallback, createElement } from 'react'
 
 import SimpleExample from './examples/simple'
 import SubroutesExample from './examples/subroutes'
+import PropsExample from './examples/props'
 
 const examples = {
     'Simple': SimpleExample,
-    'Subroutes': SubroutesExample
+    'Subroutes': SubroutesExample,
+    'Props': PropsExample
 }
 
 export default function App() {    
