@@ -38,14 +38,16 @@ RouteTreeContext.displayName = 'RouteTreeContext'
  * Routing hook
  * @param {Object[]|Object} routes
  * @param {String|RegExp} [routes[].path = '/*' ] 
- * @param {String|function(params:Object, match:String):ReactElement} routes[].target  
+ * @param {String|function(params:Object, match:String, props:Object):ReactElement} routes[].target
+ * @param {String} basePath - base path of routes
+ * @param {Object} props - properties passed to the component
  */
-export default function useRoutes(routes, basePath) {
+export default function useRoutes(routes, basePath, props) {
 
     const [route, setRoute] = useState(null)
     const routeTreeID = useContext(RouteTreeContext)
-    const routeID = useMemo(() => routeTreeID || generateRouteTreeID(), [routes, match])
-    const extra = useMemo(() => new UseRoutesHookExtra(convert(routes, basePath), routeID, setRoute), [routes, match])
+    const routeID = useMemo(() => routeTreeID || generateRouteTreeID(), [routes, basePath])
+    const extra = useMemo(() => new UseRoutesHookExtra(convert(routes, basePath), routeID, setRoute), [routes, basePath])
 
     useEffect(extra.handleEffect, [])
 
@@ -63,10 +65,10 @@ export default function useRoutes(routes, basePath) {
     if (!routeTreeID) {
         return (
             <RouteTreeContext.Provider value={routeID}>
-                {target(params, match)}
+                {target(params, match, props)}
             </RouteTreeContext.Provider>
         )
     }
 
-    return target(params, match)
+    return target(params, match, props)
 }
