@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, createContext, useContext } from 'react'
-import UseRoutesHookExtra from './UseRoutesHookExtra'
+import UseRoutesHookExt from './UseRoutesHookExt'
 
 function convert(routes, basePath) {
 
@@ -47,15 +47,15 @@ export default function useRoutes(routes, basePath, props) {
     const [route, setRoute] = useState(null)
     const routeTreeID = useContext(RouteTreeContext)
     const routeID = useMemo(() => routeTreeID || generateRouteTreeID(), [routes, basePath])
-    const extra = useMemo(() => new UseRoutesHookExtra(convert(routes, basePath), routeID, setRoute), [routes, basePath])
+    const ext = useMemo(() => new UseRoutesHookExt(convert(routes, basePath), routeID, setRoute), [routes, basePath])
 
-    useEffect(extra.handleEffect, [])
+    useEffect(ext.handleEffect.bind(ext), [])
 
     let currentRoute = route
 
     if (!route) {
-        currentRoute = extra.getTargetRoute()
-        extra.lastRoute = currentRoute
+        currentRoute = ext.getTargetRoute()
+        ext.lastRoute = currentRoute
     }
 
     if (!currentRoute.target) return null

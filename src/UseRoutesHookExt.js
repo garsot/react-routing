@@ -2,9 +2,9 @@ import HistoryManager from './HistoryManager'
 import parseUrl from './parseUrl'
 
 /**
- * Extra class for useRoutes hook
+ * Class used in useRoutes hook
  */
-export default class UseRoutesHookExtra {
+export default class UseRoutesHookExt {
 
     constructor(routes, routeTreeID, setRoute) {
         this.routes = routes
@@ -24,7 +24,7 @@ export default class UseRoutesHookExtra {
         return keys1.every(key => obj1[key] === obj2[key])
     }
 
-    getTargetRoute = () => {
+    getTargetRoute() {
 
         let currentUrl = location.pathname
 
@@ -59,7 +59,7 @@ export default class UseRoutesHookExtra {
         return {}
     }
 
-    handleHistoryChange = () => {
+    handleHistoryChange = () => {       
 
         const targetRoute = this.getTargetRoute()
         this.lastRoute = this.lastRoute || {}
@@ -69,13 +69,13 @@ export default class UseRoutesHookExtra {
         )) return
 
         this.lastRoute = targetRoute
-        
+
         this.onUrlChange(targetRoute)
 
         return false
     }
 
-    handleEffect = () => {
+    handleEffect() {
         HistoryManager.on(this.handleHistoryChange, this.routeTreeID)
         return () => {
             HistoryManager.off(this.handleHistoryChange, this.routeTreeID)
