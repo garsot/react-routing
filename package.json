@@ -1,6 +1,6 @@
 {
   "name": "@kemsu/react-routing",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Routing for React using hooks",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
