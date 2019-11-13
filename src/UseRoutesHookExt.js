@@ -46,7 +46,7 @@ export default class UseRoutesHookExt {
 
                 if (typeof target === 'string') {
 
-                    window.history.pushState({}, null, target)
+                    window.history.replaceState({}, null, target)
                     currentUrl = target
 
                     continue

@@ -83,5 +83,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "build": "^0.1.4"
+  }
 }
