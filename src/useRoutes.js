@@ -49,7 +49,7 @@ export default function useRoutes(routes, basePath, props) {
     const routeID = useMemo(() => routeTreeID || generateRouteTreeID(), [routes, basePath])
     const ext = useMemo(() => new UseRoutesHookExt(convert(routes, basePath), routeID, setRoute), [routes, basePath])
 
-    useEffect(ext.handleEffect.bind(ext), [])
+    useEffect(ext.handleEffect, [])
 
     let currentRoute = route
 

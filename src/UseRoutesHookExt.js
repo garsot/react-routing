@@ -12,6 +12,9 @@ export default class UseRoutesHookExt {
         this.onUrlChange = route => {
             setRoute(route)
         }
+
+        this.handleHistoryChange = this.handleHistoryChange.bind(this)
+        this.handleEffect = this.handleEffect.bind(this)
     }
 
     shallowEqual(obj1 = {}, obj2 = {}) {
@@ -59,7 +62,7 @@ export default class UseRoutesHookExt {
         return {}
     }
 
-    handleHistoryChange = () => {       
+    handleHistoryChange() {       
 
         const targetRoute = this.getTargetRoute()
         this.lastRoute = this.lastRoute || {}
