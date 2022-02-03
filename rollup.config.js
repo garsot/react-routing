@@ -1,11 +1,9 @@
-import path from 'path'
-
-import babel from 'rollup-plugin-babel'
-import commonjs from 'rollup-plugin-commonjs'
-import resolve from 'rollup-plugin-node-resolve-with-alias'
-import serve from 'rollup-plugin-serve'
-import replace from 'rollup-plugin-replace'
-import copy from 'rollup-plugin-copy'
+import babel from '@rollup/plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
+import dev from 'rollup-plugin-dev'
+import replace from '@rollup/plugin-replace'
+import copy from '@guanghechen/rollup-plugin-copy'
 
 import pkg from './package.json'
 
@@ -26,10 +24,13 @@ const srcConfig = {
     external: Object.keys(pkg.peerDependencies),
     plugins: [
         babel({
+            babelHelpers: 'bundled',
             exclude: 'node_modules/**',
             ...pkg.babelOptions
         }),
-        resolve(),
+        resolve({
+            moduleDirectories: ["node_modules"]
+        }),
         commonjs()
     ]
 }
@@ -43,40 +44,38 @@ const exampleConfig = {
     },
     plugins: [
         copy({
-            'example/index.html': 'example/dist/index.html',
-            verbose: true
+            targets: [
+                { src: 'example/index.html', dest: 'example/dist' }
+            ]
         }),
         babel({
+            babelHelpers: 'bundled',
             exclude: 'node_modules/**',
             ...pkg.babelOptions
         }),
-        resolve({
-            alias: {
-                "@kemsu/react-routing": path.resolve(__dirname, "src")
-            }
-        }),
+        resolve(),
         replace({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
-        }),
-        commonjs({
-            namedExports: {
-                'react': ['useState', 'useEffect', 'useMemo', 'createContext', 'useContext', 'forwardRef', 'useCallback', 'createElement']
+            preventAssignment: true,
+            values: {
+                'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
             }
         }),
+        commonjs(),
 
         process.env.RUN_EXAMPLE
         &&
-        serve({
-            historyApiFallback: true,
-            contentBase: 'example/dist',
-            port: 3000,
-            open: true,
-            headers: {
-                'Cache-Control': 'no-cache'
-            }
+        dev({
+            spa: true,
+            basePath: "/",
+            dirs: ['example/dist'],
+            host: '0.0.0.0',
+            port: 3000
         })
 
-    ]
+    ],
+    watch: {
+        chokidar: true
+    }
 }
 
 export default (process.env.RUN_EXAMPLE ? exampleConfig : srcConfig)
