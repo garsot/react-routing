@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, createContext, useContext } from 'react'
-import UseRoutesHookExt from './UseRoutesHookExt'
+import { UseRoutesHookExt } from './UseRoutesHookExt'
 
 function convert(routes, basePath) {
 
@@ -37,12 +37,12 @@ RouteTreeContext.displayName = 'RouteTreeContext'
 /**
  * Routing hook
  * @param {Object[]|Object} routes
- * @param {String|RegExp} [routes[].path = '/*' ] 
- * @param {String|function(params:Object, match:String, props:Object):ReactElement} routes[].target
- * @param {String} basePath - base path of routes
+ * @param {string|RegExp} [routes[].path = '/*' ] 
+ * @param {string|(params:Object, match:string, props:Object) => ReactElement} routes[].target
+ * @param {string} basePath - base path of routes
  * @param {Object} props - properties passed to the component
  */
-export default function useRoutes(routes, basePath, props) {
+export function useRoutes(routes, basePath, props) {
 
     const [route, setRoute] = useState(null)
     const routeTreeID = useContext(RouteTreeContext)

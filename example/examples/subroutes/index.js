@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRoutes, Link } from '@kemsu/react-routing'
+import { useRoutes, Link } from '../../../src'
 import style from './style'
 
 const Child1 = () => console.log('render: Child1') || <div>Child 1</div>

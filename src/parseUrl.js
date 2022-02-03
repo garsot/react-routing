@@ -6,9 +6,9 @@
  * If your url can have any tail, add `/*` to end of template (for example, `/page/:subpage/*`). Tail not included in `match`.
  * @param {string} path
  * @param {string} [url = location.pathname] - url pathname.
- * @returns {{ params: Object, match: String }}
+ * @returns {{ params: Object, match: string }}
  */
-export default function parseUrl(path, url = location.pathname) {
+export function parseUrl(path, url = location.pathname) {
 
     if (path instanceof RegExp) {
 

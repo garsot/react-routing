@@ -1,7 +1,7 @@
-export { default as HistoryManager } from './HistoryManager'
-export { default as useRoutes } from './useRoutes'
-export { default as parseUrl } from './parseUrl'
-export { default as Link } from './Link'
+export { HistoryManager } from './HistoryManager'
+export { useRoutes } from './useRoutes'
+export { parseUrl } from './parseUrl'
+export {  Link } from './Link'
 
 
 

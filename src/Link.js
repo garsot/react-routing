@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 import PropTypes from 'prop-types'
 
-import HistoryManager from './HistoryManager'
+import { HistoryManager } from './HistoryManager'
 
 /**
  * Native anchor wrapper. Instead `href` use property `to`.
@@ -23,4 +23,4 @@ Link.propTypes = {
     ]).isRequired    
 }
 
-export default Link
+export { Link }

@@ -1,10 +1,10 @@
-import HistoryManager from './HistoryManager'
-import parseUrl from './parseUrl'
+import { HistoryManager } from './HistoryManager'
+import { parseUrl } from './parseUrl'
 
 /**
  * Class used in useRoutes hook
  */
-export default class UseRoutesHookExt {
+export class UseRoutesHookExt {
 
     constructor(routes, routeTreeID, setRoute) {
         this.routes = routes
@@ -62,7 +62,7 @@ export default class UseRoutesHookExt {
         return {}
     }
 
-    handleHistoryChange() {       
+    handleHistoryChange() {
 
         const targetRoute = this.getTargetRoute()
         this.lastRoute = this.lastRoute || {}

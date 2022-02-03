@@ -1,7 +1,7 @@
 /**
  * Provides static methods for changing url
  */
-export default class HistoryManager {
+export class HistoryManager {
 
     static handlersMap = {}
 

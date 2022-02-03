@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRoutes, Link, HistoryManager } from '@kemsu/react-routing'
+import { useRoutes, Link } from '../../../src'
 import style from './style'
 
 const routes = {
