@@ -18,16 +18,15 @@ export function parseUrl(path, url = location.pathname) {
             match: execResult[0],
             params: execResult.slice(1)
         }
-    }    
+    }
 
     let patternRE = '^' + path.replace(/\/:[^/\\*]+/g, '/([^/\\*]+)')
 
     if (!path.endsWith('/*')) {
         patternRE += "$"
-    }else {
-        patternRE = patternRE.slice(0,-2)
-
-        if(patternRE === "^") patternRE = "^/"
+    } else {
+        patternRE = patternRE.slice(0, -2) + '(/.+)'
+        //if (patternRE === "^") patternRE = "^/"
     }
 
     patternRE = new RegExp(patternRE)
@@ -41,11 +40,12 @@ export function parseUrl(path, url = location.pathname) {
         paramNames.push(parsedParamName[1])
     }
 
-    let parsedPath = patternRE.exec(url)    
+    let parsedPath = patternRE.exec(url)
 
-    return  parsedPath && {
+    return parsedPath && {
         match: parsedPath[0],
-        params: Object.assign({}, ...paramNames.map((paramName, index) => ({ [paramName]: parsedPath[index + 1] })))
+        params: Object.assign({}, ...paramNames.map((paramName, index) => ({ [paramName]: parsedPath[index + 1] }))),
+        tail: paramNames.length + 1 !== parsedPath.length ? parsedPath[parsedPath.length - 1] : undefined
     }
 
 }

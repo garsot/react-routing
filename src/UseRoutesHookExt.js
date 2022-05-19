@@ -49,6 +49,16 @@ export class UseRoutesHookExt {
 
                 if (typeof target === 'string') {
 
+                    Object.entries(parseResult.params)
+                        .forEach(([paramName, paramValue]) => {
+                            target = target.replace(new RegExp('/' + paramName, 'g'), paramValue)
+                        })
+
+                    if(target.endsWith('/*') && parseResult.tail) {
+                        target = target.slice(0, -2)
+                        target +=  parseResult.tail
+                    }
+
                     window.history.replaceState({}, null, target)
                     currentUrl = target
 
